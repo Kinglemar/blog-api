@@ -6,12 +6,10 @@ const blogSchema = new mongoose.Schema(
         title: {
             required: true,
             type: String,
-            trim: true
         },
         author: {
             required: true,
             type: String,
-            trim: true
         },
         body: {
             type: String,
