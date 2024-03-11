@@ -5,9 +5,8 @@ const compression = require("compression");
 const cors = require("cors");
 const passport = require("passport");
 const session = require("express-session");
-import RedisStore from "connect-redis";
-import session from "express-session";
-import { createClient } from "redis";
+const RedisStore = require("connect-redis").default
+const { createClient } = require("redis");
 const httpStatus = require("http-status");
 const config = require("./config/config");
 const morgan = require("./config/morgan");
