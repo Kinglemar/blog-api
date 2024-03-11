@@ -6,7 +6,7 @@ const cors = require("cors");
 const passport = require("passport");
 const session = require("express-session");
 const RedisStore = require("connect-redis").default
-const { createClient } = require("redis");
+const redis = require("redis");
 const httpStatus = require("http-status");
 const config = require("./config/config");
 const morgan = require("./config/morgan");
@@ -53,7 +53,13 @@ app.use(passport.initialize());
 passport.use("jwt", jwtStrategy);
 app.set("trust proxy", 1);
 
-let redisClient = createClient();
+let redisClient = redis.createClient({
+    password: config.redis.password,
+    socket: {
+        host: config.redis.url,
+        port: config.redis.port
+    }
+});
 redisClient.connect().catch(console.error);
 
 let redisStore = new RedisStore({

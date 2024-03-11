@@ -16,7 +16,9 @@ envVarsSchema = Joi.object().keys({
     PORT: Joi.number().default(4000),
     MONGODB_URL: Joi.string().required().description('Mongo db connection string'),
     GOOGLE_CLIENT_ID: Joi.string().required().description('Google Api client ID'),
-    GOOGLE_CLIENT_SECRET: Joi.string().required().description('Google client secret')
+    GOOGLE_CLIENT_SECRET: Joi.string().required().description('Google client secret'),
+    REDIS_URL: Joi.string().required().description('Redis url'),
+    REDIS_PASSWORD: Joi.string().required().description('Redis secret')
 }).unknown();
 
 const { value, error } = envVarsSchema.prefs({ errors: { label: 'key' } }).validate(process.env);
@@ -42,6 +44,11 @@ module.exports = {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         },
+    },
+    redis: {
+        url: value.REDIS_URL,
+        password: value.REDIS_PASSWORD,
+        port: value.REDIS_PORT
     },
     google: {
         client_id: value.GOOGLE_CLIENT_ID,
