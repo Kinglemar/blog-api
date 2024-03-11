@@ -5,6 +5,9 @@ const compression = require("compression");
 const cors = require("cors");
 const passport = require("passport");
 const session = require("express-session");
+import RedisStore from "connect-redis";
+import session from "express-session";
+import { createClient } from "redis";
 const httpStatus = require("http-status");
 const config = require("./config/config");
 const morgan = require("./config/morgan");
@@ -50,9 +53,18 @@ app.options("*", cors());
 app.use(passport.initialize());
 passport.use("jwt", jwtStrategy);
 app.set("trust proxy", 1);
+
+let redisClient = createClient();
+redisClient.connect().catch(console.error);
+
+let redisStore = new RedisStore({
+  client: redisClient,
+  prefix: "Blog-api",
+});
 app.use(
   session({
-    secret: "plain",
+    store: redisStore,
+    secret: "xxxxx*|***|||",
     resave: false,
     saveUninitialized: true,
     cookie: { secure: true },
